@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
   const add = 1 + 2;
   var customStyle ={
-    color:'blue'
+    color:'tomato'
   }
   //02
   const products = [
@@ -56,17 +56,21 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p style={customStyle}>May name is Hira</p>
+        <h2 style={customStyle}>My name is Hira</h2>
         <p>Add  is {add}</p>
-
+        <Counter></Counter>
+        <Users></Users>
+        <h3>Uses map and pass dynamic data for show different card data</h3>
       {
         friendsDetails.map(friend => <Friends friendData={friend}></Friends>)
       }
-
+        <h3>Uses tag and pass object for show one by one card data</h3>
         <Product products = {products[0]}></Product>
         <Product products = {products[1]}></Product>
         <Product products = {products[2]}></Product>
         <Product products = {products[3]}></Product>
+
+        <h3>Uses tag and pass custom data for show one by one card</h3>
         <Person name='Hasnat Rokon' subject='Math'></Person>
         <Person name='Shamim Sharkar' subject='English'></Person>
         <Person name='Shihabul Alom' subject='Bangla'></Person>
@@ -76,6 +80,58 @@ function App() {
     </div>
   );
 }
+
+//05
+function Users(){
+  const [users, setUser] = useState([])
+useEffect(() =>{
+      fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(data => setUser(data))
+},[]);
+
+const userStyle = {
+  width:"400px",
+  height:"250px",
+  color:"black",
+  backgroundColor:'tomato',
+  border:'1px solid black',
+  borderRadius:'10px',
+  margin:'20px',
+  padding:"0px 30px 40px 30px"
+}
+console.log(users)
+  return (
+    <div>
+        <h2>Dynamic API Data Load</h2>
+        <h3>Total User: {users.length}</h3>
+        {
+          users.map(user => <div style={userStyle}>
+                <h4>User No: {user.id}</h4>
+                <h4>Name: {user.name}</h4>
+                <h4>Email: {user.email}</h4>
+                <h4>Email: {user.phone}</h4>
+              </div>
+            )
+        }
+    </div>
+  )
+}
+
+
+//04
+function Counter(){
+const [count, setCount] = useState(0);
+// const handleIncrease = () => setCount (count+ 1);
+return (
+  <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => {if(count > 0){setCount (count - 1)}}}>Decrease</button>
+      <button onClick={() => setCount (count+ 1)}>Increase</button>
+  </div>
+)
+}
+
 //03
 const Friends = props =>{
   const friendsStyle = {
@@ -88,11 +144,12 @@ const Friends = props =>{
   }
   const {name, age, aim} = props.friendData;
   return (
-    <div style={friendsStyle}>
-        <h3>Name: {name}</h3>
-        <h4>Age: {age}</h4>
-        <h4>Aim: {aim}</h4>
-    </div>
+       <div style={friendsStyle}>
+          <h3>Name: {name}</h3>
+          <h4>Age: {age}</h4>
+          <h4>Aim: {aim}</h4>
+      </div>
+
   )
 }
 //02
